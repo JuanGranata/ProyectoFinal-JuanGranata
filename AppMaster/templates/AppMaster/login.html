@@ -1,0 +1,29 @@
+{% extends "AppMaster/padre.html" %}
+
+{% load static %}
+
+{% block titulo %}
+<h1 class="mb-5">Login</h1>
+
+<form action="{% url 'login'  %}" method="POST"> {% csrf_token %}
+
+    <table>
+    
+        {{ form.as_table }}
+    
+    </table>
+    
+    <input type="submit" value="INGRESAR">
+    
+    {{ mensaje }}
+    
+</form>
+{% endblock %}
+
+{% block contenido_que_cambia %}
+
+
+
+
+
+{% endblock %}

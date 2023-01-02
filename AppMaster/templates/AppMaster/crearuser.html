@@ -1,0 +1,28 @@
+{% extends "AppMaster/padre.html" %}
+
+{% load static %}
+
+
+{% block titulo %}
+
+<h1 class="text-center">Alta de Usuario <br> </h1>
+<h2 class="text-center text-white">Por favor carga los datos del Usuario</h2>
+    <form  action="{% url 'register' %}" method="POST"> {% csrf_token %}
+
+    <table>
+    
+     {{ form.as_table }}
+    
+    </table>
+    
+    <input type="submit" value="Cargar Usuario"> 
+    
+    </form>
+
+
+{% endblock %}
+
+
+{% block contenido_que_cambia %}
+
+{% endblock %}

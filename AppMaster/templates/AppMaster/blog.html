@@ -1,0 +1,22 @@
+{% extends "AppMaster/padre.html" %}
+
+{% load static %}
+
+{% block titulo %}
+<h1>Nuevo Blog<br> </h1>
+
+<h2 class="text-center text-white">Comparti tu articulo</h2>
+    <form  action="{% url 'blog' %}" method="POST"> {% csrf_token %}
+
+    <p> Fecha: <input type ="date" name="fecha"> </p>
+    <p> Autor: {{ user.username }} </p>
+    <p> Cuerpo: <input type = "text" name="cuerpo"> </p>
+    <input type="submit" value="ENVIAR Blog">
+
+    </form>
+
+{% endblock %}
+
+{% block contenido_que_cambia %}
+
+{% endblock %}

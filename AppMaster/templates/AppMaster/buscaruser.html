@@ -1,0 +1,24 @@
+{% extends "AppMaster/padre.html" %}
+
+{% load static %}
+
+{% block titulo %}
+<h2>Busqueda de Usuario <br> </h2>
+
+<form action="{% url 'buscar' %}" method="GET"> 
+
+    <input title="Nombre Usuario" type="text" name="user" id="user">
+
+    <input type="submit" value="buscar">
+
+</form>
+{{ mensaje }}
+
+{% endblock %}
+
+{% block contenido_que_cambia %}
+
+
+
+
+{% endblock %}

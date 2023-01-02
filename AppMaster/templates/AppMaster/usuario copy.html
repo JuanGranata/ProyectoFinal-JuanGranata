@@ -1,0 +1,26 @@
+{% extends "AppMaster/padre.html" %}
+
+{% load static %}
+
+
+{% block titulo %}
+{% if user.is_authenticated %}
+    <h2> Usuario: {{ user.username }}</h2>
+
+    <nav class="navbar navbar-light">
+        <a class="btn btn-primary" href="{% url 'register' %}">Crear</a>
+        <a class="btn btn-primary" href="{% url 'editarUsuario' %}">Editar</a>
+        <a class="btn btn-primary" href="{% url 'buscaruser' %}">Buscar</a>
+            
+    </nav>
+
+{% else %}
+    <a class="btn btn-primary" href="{% url 'login' %}">Login</a>
+{% endif %} 
+
+{% endblock %}
+
+
+{% block contenido_que_cambia %}
+
+{% endblock %}

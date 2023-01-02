@@ -1,0 +1,20 @@
+{% extends "AppMaster/padre.html" %}
+
+{% load static %}
+
+{% block titulo %}
+<h1 class="mb-5">Datos de Usuario</h1>
+{% endblock %}
+
+{% block contenido_que_cambia %}
+
+
+
+<p>NOMBRE : <i>{{usuario.nombre}}</i></p>
+<p>APELLIDO : <i>{{usuario.apellido}}</i></p>
+<p>EMAIL : <i>{{usuario.email}}</i></p>
+
+
+
+
+{% endblock %}

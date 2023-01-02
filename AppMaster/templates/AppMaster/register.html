@@ -1,0 +1,26 @@
+{% extends "AppMaster/padre.html" %}
+
+{% load static %}
+
+{% block titulo %}
+<h1 class="mb-5">Registracion de Usuarios</h1>
+
+<form action="{% url 'register'  %}" method="POST"> {% csrf_token %}
+
+    <table>
+    
+        {{ form.as_table }}
+    
+    </table>
+    
+    <input type="submit" value="CREAR USUARIO">
+    
+    
+    </form>
+
+    {{ mensaje  }}
+{% endblock %}
+
+{% block contenido_que_cambia %}
+
+{% endblock %}
