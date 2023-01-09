@@ -6,12 +6,16 @@
 {% block titulo %}
 <h1 class="mb-5">RESULTADOS DE LA BUSQUEDA <br> </h1>
 
-{% if usuario %}
-<h2 class="text-center text-white">
-    {% for usuario in usuario %}
-        Usuario: {{ usuario.usuario }} <br> Nombre: {{ usuario.nombre }} <br> Apellido: {{ usuario.apellido}} <br> ------------------------- <br>
-    {% endfor %}
-</h2>
+{% if user %}
+{% for user in user  %}
+<ul>
+Username: {{ user.username }} <br>
+Nombre: {{ user.first_name }} <br>    
+Apellido: {{ user.last_name }}  <br>
+Email: {{ user.email }}  <br>
+<p>---------------------------------------------------------</p>   
+</ul>
+{% endfor %}
 
 {% else %}
 

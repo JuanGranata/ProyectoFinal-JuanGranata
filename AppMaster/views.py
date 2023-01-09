@@ -1,31 +1,24 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect, get_object_or_404
 from .models import *
+from .forms import PostForm
 from django.http import HttpResponse
 from AppMaster.forms import *
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
-from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
-from django.contrib.auth import login, authenticate
+from django.contrib.auth.forms import AuthenticationForm, UserCreationForm, User
+from django.contrib.auth import login, authenticate, logout
 from django.urls import reverse_lazy
+from django.utils import timezone
+
 
 # Create your views here.
 
-#Modulo Avatar
-def nuevoAvatar(request):
-    lista=Avatar.objects.filter(user=request.user)
-    if len(lista)!=0:
-        imagen=lista[0].imagen.url
-    else:
-        imagen="/media/avatares/avatarpordefecto.png"
-    return imagen
-
 # Modulo de inicio
-@login_required
+#@login_required
 def inicio(request):
     #lista=Avatar.objects.filter(user=request.user)
-    
     return render (request, "AppMaster/inicio.html")
 
 # Modulo about me
@@ -35,57 +28,17 @@ def aboutme(request):
 # Modulo pagina usuario
 #@login_required
 def usuario(request):
-    return render (request, "AppMaster/usuario.html",context)
+    return render (request, "AppMaster/usuario.html")
 
 # Modulo mensaje exitoso
 def exitoso(request):
     return render (request, "AppMaster/exitoso.html")
 
-# Modulo carga de blog
-def blog_form(request):
-    if request.method=="POST":
-        form=BlogForm(request.POST)
-        if form.is_valid():
-            art=form.cleaned_data
-            blog = Blog(usuario=(request.user), cuerpo=art["cuerpo"], fecha=art["fecha"])
-            blog.save()
-            return render (request, "AppMaster/exitoso.html", {"mensaje": "Blog creado Correctamente!!"})
-    else:
-        form=BlogForm()
-    
-    return render (request, "AppMaster/blog.html", {"form":form})
-
-
-#def blog_form(request):
-#    if request.method=="POST":
-#        form=BlogForm(request.POST)
-#        if form.is_valid():
-#            art=form.cleaned_data
-#            blog = Blog(usuario=art["usuario"], cuerpo=art["cuerpo"], fecha=art["fecha"])
-#            blog.save()
-#            return render (request, "AppMaster/exitoso.html", {"mensaje": "Blog creado Correctamente!!"})
-#    else:
-#        form=BlogForm()
-    
-#    return render (request, "AppMaster/blog.html", {"form":form})
-
-# Modulo carga de usuarios
-@login_required
-def usu_form(request):
-    if request.method=="POST":
-        form=UsuForm(request.POST)
-        if form.is_valid():
-            usu = form.cleaned_data
-            user = Usuario(usuario=usu["usuario"], nombre=usu["nombre"], apellido=usu["apellido"], email=usu["email"])
-            user.save()
-            return render (request, "AppMaster/exitoso.html", {"mensaje": "Usuario CREADO CORRECTAMENTE!!"})#, "imagen":nuevoAvatar(request)})
-    else:
-        formulario=UsuForm()
-    
     return render (request, "AppMaster/crearuser.html", {"form":formulario})
 
-#modulo para registro de usuarios con privilegios
-@login_required
+
+#modulo para registro de usuarios
+#@login_required
 def register(request):
     if request.method=="POST":
         form=RegistroUsuarioForm(request.POST)
@@ -103,24 +56,30 @@ def register(request):
     return render(request, "AppMaster/register.html", {"form":form})
 
 # Modulos de buquedas de clinetes en la base de datos
-@login_required
+#@login_required
 def buscaruser(request):
     return render(request, "AppMaster/buscaruser.html")
 
-# Modulos para editar usuarios
-@login_required
-def editarUsuario(request):
-    return render(request, "AppMaster/editarUsuario.html")
 # Algoritmo de busqueda de usuario
-
-@login_required
+#@login_required
 def buscar(request):
-    if request.GET["user"]:
+    print("--->",request.GET)
+    if "user" in request.GET:
         user=request.GET["user"]
-        users=Usuario.objects.filter(usuario__icontains=user)
-        return render(request,"AppMaster/resultadosBusqueda.html", {"usuario":users} )
+        print("2----------->",user)
+        users=UserExt.objects.filter(username__icontains=user)
+        print("3----------->",users)
+        contexto={"user": users}
+        return render(request,"AppMaster/resultadosBusqueda.html", contexto)
     else:
         return render(request, "AppMaster/buscaruser.html", {"mensaje":"Por favor ingresa el Usuario"})
+
+def listarusuarios(request):
+    users=UserExt.objects.all()
+    contexto={"user":users}
+    print("contexto--->", contexto)
+    return render (request, "AppMaster/listarusuarios.html",contexto)
+
 
 def addAvatar(request):
     if request.method=="POST":
@@ -138,26 +97,81 @@ def addAvatar(request):
         form=AvatarForm()
         return render(request , "AppMaster/addAvatar.html", {"formulario": form, "usuario": request.user})
 
-@login_required
-def editarPerfil(request):
-    usuario=request.user
-    if request.method=="POST":
-        form=UserEditForm(request.POST)
-        if form.is_valid():
-            info=form.cleaned_data
-            usuario.email=info["email"]
-            usuario.password1=info["password1"]
-            usuario.password2=info["password2"]
-            usuario.first_name=info["first_name"]
-            usuario.last_name=info["last_name"]
-            usuario.save()
-            return render(request, "AppMaster/exitoso.html", {"mensaje":"Perfil editado correctamente"})
-        else:
-            return render(request, "AppMaster/editarUsuario.html", {"form":form, "nombreusuario":usuario.username, "mensaje":"Error al editar el perfil"})
+#Modulo Avatar
+def nuevoAvatar(request):
+    lista=Avatar.objects.filter(user=request.user)
+    if len(lista)!=0:
+        imagen=lista[0].imagen.url
     else:
-        form=UserEditForm(instance=usuario)
-        return render(request, "AppMaster/editarUsuario.html", {"form":form, "nombreusuario":usuario.username})
+        imagen="/media/avatares/avatarpordefecto.png"
+    return imagen
 
+def eliminarUsuario(request, id):
+    usuario=get_object_or_404(UserExt, id=id)
+    print('-->', usuario)
+    usuario.delete()
+    user=UserExt.objects.all()
+    print('2--->', user)
+    return render(request, "AppMaster/listarusuarios.html", {"mensaje":"Usuario eliminado correctamente", "user":user})
+
+#@login_required
+#def editarUsuario(request, id):
+#    print("--->", usuario)
+#    usu=Usuario.objects.get(id=id)
+#    print("2--->", usu)
+#    if request.method=="POST":
+#        form=UsuForm(request.POST)
+#        if form.is_valid():
+#            info=form.cleaned_data
+#            usu.nombre=info["nombre"]
+#            usu.apellido=info["apellido"]
+#            usu.email=info["email"]
+#            usu.save()
+#            print("3--->", usu)
+#            usuarios=Usuario.objects.all()
+#            return render(request, "AppMaster/listarusuarios.html", {"mensaje":"Perfil editado correctamente", 'usuario': usuarios})
+#        else:
+#            print("---> error en el form")
+#            return render(request, "AppMaster/editarUsuario.html", {"form":form, "usuario":usu.usuario, "mensaje":"Error al editar el perfil"})
+#    else:
+#        print("---> entro por GET")
+#        print("--GET-->", usu)
+#        form=UsuForm(initial={'ID': usu.id, 'Usuario': usu.usuario, 'Nombre': usu.nombre, 'Apellido':usu.apellido, 'Email': usu.email})
+#        print('--GET-->', form)
+#
+#    return render(request, "AppMaster/editarUsuario.html", {"form":form, "id":usu.id})
+
+def detalleUsuario(request, pk):
+	users = get_object_or_404(UserExt, pk=pk)
+	return render(request, 'AppMaster/detalleUsuario.html', {'user': users})
+
+def editarUsuario(request, id):
+    print("--->", usuario)
+    usu=get_object_or_404(UserExt, id=id)
+    print("2--->", usu)
+    if request.method=="POST":
+        form=RegExtForm(request.POST)
+        if form.is_valid():
+            #info=form.save(commit=False)
+            usu.first_name=form.cleaned_data.get("first_name")
+            usu.last_name=form.cleaned_data.get("lastt_name")
+            usu.email=form.cleaned_data.get("email")
+            usu.password1=form.cleaned_data.get("password1")
+            usu.password2=form.cleaned_data.get("password2")
+            usu.save()
+            print("3--->", usu)
+            return redirect("AppMaster/detalleUsuario.html", {'mensaje': 'cambio realizado con exito', 'id':usu.id})
+            
+        else:
+            print("---> error en el form")
+            form=RegExtForm(instance = usu)
+            print('--->', usu)
+            return render(request, "AppMaster/editarUsuario.html", {'mensaje': 'hay un error en formulario', "form":form, "id":usu.id})
+    else:
+        print("--GET-->", usu)
+        form=RegExtForm(instance = usu)
+    
+    return render(request, "AppMaster/editarUsuario.html", {'mensaje': 'entra por GET', "form":form, "id":usu.id})
 
 #----- seccion de login ------
 
@@ -182,26 +196,45 @@ def login_request(request):
         form = AuthenticationForm()
     return render(request, "AppMaster/login.html", {"form":form})
 
-# CRUD basado en clases
-class UsuarioList(LoginRequiredMixin, ListView):
-    model=Usuario
-    template_name="AppMaster/leerUsuario.html"
+#Vistas para los posteos
 
-#class UsuarioCreacion(LoginRequiredMixin, CreateView):
-#    model = Usuario
-#    success_url = reverse_lazy('usuario_listar')
-#    fields=['nombre', 'apellido', 'email']
+def post_new(request):
+    if request.method == "POST":
+        form = PostForm(request.POST)
+        if form.is_valid():
+            post = form.save(commit=False)
+            post.author = request.user.authenticate
+            post.published_date = timezone.now()
+            post.save()
+            return redirect('post_detail', pk=post.pk)
+    else:
+        form = PostForm()
+        return render(request, 'AppMaster/post_edit.html', {'form': form})
 
-class UsuarioUpdate(LoginRequiredMixin, UpdateView):
-    model = Usuario
-    success_url = reverse_lazy('usuario_listar')
-    fields=['nombre', 'apellido', 'email']
+def post_edit(request, pk):
+    post = get_object_or_404(Post, pk=pk)
+    if request.method == "POST":
+        form = PostForm(request.POST, instance=post)
+        if form.is_valid():
+            post = form.save(commit=False)
+            post.author = request.user
+            post.published_date = timezone.now()
+            post.save()
+            return redirect('post_detail', pk=post.pk)
+    else:
+        form = PostForm(instance=post)
+    return render(request, 'AppMaster/post_edit.html', {'form': form})
 
-class UsuarioDelete(LoginRequiredMixin, DeleteView):
-    model = Usuario
-    success_url = reverse_lazy('usuario_listar')
+def post_detail(request, pk):
+	posts = get_object_or_404(Post, pk=pk)
+	return render(request, 'AppMaster/post_detail.html', {'posts': posts})
 
-class UsuarioDetalle(LoginRequiredMixin, DetailView):
-    model= Usuario
-    template_name="AppMaster/usuario_detalle.html"
+def post_delete(request, pk):
+    post=get_object_or_404(Post, pk=pk)
+    post.delete()
+    posts=Post.objects.all()
+    return render(request, "AppMaster/post_list.html", {"mensaje":"Post eliminado correctamente", 'posts': posts})
 
+def post_list(request):
+	posts = Post.objects.all()
+	return render(request, 'AppMaster/post_list.html', {'posts': posts})

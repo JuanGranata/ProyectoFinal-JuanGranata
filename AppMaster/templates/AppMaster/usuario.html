@@ -9,9 +9,8 @@
 
     <nav class="navbar navbar-light">
         <a class="btn btn-primary" href="{% url 'register' %}">Crear</a>
-        <a class="btn btn-primary" href="{% url 'usuario_editar' user_id %}">Editar</a>
-        <a class="btn btn-primary" href="{% url 'usuario_listar' user_id %}">Buscar</a>
-            
+        <a class="btn btn-primary" href="{% url 'buscar' %}">Buscar</a>
+        <a class="btn btn-primary" href="{% url 'listarusuarios' %}">Listar</a>    
     </nav>
 
 {% else %}

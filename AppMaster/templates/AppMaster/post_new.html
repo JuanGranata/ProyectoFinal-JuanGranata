@@ -1,0 +1,19 @@
+{% extends "AppMaster/padre.html" %}
+
+{% load static %}
+
+{% block titulo %}
+
+<h1>New Post</h1>
+
+<body>
+    <div class="page-header">
+        <a href="{% url 'post_new' %}" class="top-menu"><span class="glyphicon glyphicon-plus"></span></a> {% csrf_token %}
+    </div>
+</body>
+
+{% endblock %}
+
+{% block contenido_que_cambia %}
+
+{% endblock %}

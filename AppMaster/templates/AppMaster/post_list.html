@@ -1,0 +1,32 @@
+{% extends "AppMaster/padre.html" %}
+
+{% load static %}
+
+{% block titulo %}
+<a class="btn btn-primary" href="{% url 'post_new' %}">Crear nuevo Post</a><br><br>
+
+<p class="text-center text-white"> {{  mensaje  }} </p>
+
+<h1 class="mb-5">Listados de Post</h1>
+
+<div class="post">
+
+    {% for posts in posts %}
+    <div class="date">Fecha: {{ posts.published_date }}</div>
+    <p> Autor: {{ posts.author }}</p>     
+    <p> Titulo: {{ posts.title }}</p>
+    <p>Texto: {{ posts.text|linebreaksbr }}</p>
+    
+    <a class="btn btn-primary" href="{% url 'post_edit' pk=posts.pk %}">Editar</a>
+    <a class="btn btn-primary" href="{% url 'post_delete' pk=posts.pk %}">Borrar</a>
+    <p>----------------------------------------</p>
+
+    {% endfor %}
+
+</div>
+
+{% endblock %}
+
+{% block contenido_que_cambia %}
+
+{% endblock %}

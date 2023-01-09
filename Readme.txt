@@ -1,45 +1,26 @@
-﻿Objetivos generales
-✓ Desarrollar una WEB Django con patrón MVT subida a Github.
+﻿ENTREGA DEL PROYECTO FINAL
+Se debe entregar:
+✔	Se deberá realizar de forma individual, crearás una aplicación web estilo blog programada en Python en Django. Esta web tendrá administrador, perfiles, registros, páginas y formularios.
+✔	La entrega se realizará enviando el link a GitHub, en el readme de GitHub deberá estar el nombre completo del estudiante y una descripción de dos o tres renglones contando qué hizo. 
+✔	En el GitHub debe haber un video o link a vídeo donde el estudiante muestra su web funcionando en no más de diez minutos. 
+Dentro del GitHub deberá existir una carpeta con por lo menos 3 casos de pruebas debidamente documentados.
 
-Se debe entregar
-✓ Link de GitHub con el proyecto totalmente subido a la plataforma.
-✓ Proyecto Web Django con patrón MVT que incluya:
-    1. Herencia de HTML.
-    2. Por lo menos 3 clases en models.
-    3. Un formulario para insertar datos a todas las clases de tu models.
-    4. Un formulario para buscar algo en la BD
-    5. Readme que indique el orden en el que se prueban las cosas y/o donde están las funcionalidades.
+Consigna: Se tiene que crear una Web semejante a un Blog, dicha web deberá contar con usuarios y permisos para ellos. La web deberá contar con:
+✔	Contar con algún acceso visible a la vista de "Acerca de mí" donde se contará acerca de los dueños de la página manejada en el route about/.  (En castellano un acerca de mí que hable un poco de los creadores de la web y del proyecto).
+✔	Contar con algún acceso visible a la vista de blogs que debe alojarse en el route pages/. (Es decir un html que permite listar todos los blogs de la BD, con una información mínima de dicho blog)
+✔	Acceder a una pantalla que contendrá las páginas. Al clickear en “Leer más” debe navegar al detalle de la page mediante un route pages/<pageId>. (Al hacer clic se ven más detalle de lo que se veía en el apartado anterior) 
+✔	Si no existe ninguna página mostrar un "No hay páginas aún". (Aclarando, si en la página hacemos clic en algún lugar que no existe que diga eso, o que lleve a un html con esos mensaje, no dejar botones que no responden)
+✔	Para crear, editar o borrar las fotos debes estar registrado como Administrador.
+✔	Cada blog, es decir cada model Blog debe tener como mínimo, un título, subtítulo, cuerpo, autor, fecha y una imagen (mínimo y obligatorio, puede tener más).
+✔	Piezas sugeridas, no hace falta que estén todas, pero tiene que haber por lo menos un CRUD completo y el módulo de Login debe ser sólido:
+
 --------------------------------------------------------------------------------------------------------
 
 Set de pruebas segun cada vista:
 
-Empleados:
-    - Cargar Nombre (texto hasta 50 caracteres)
-    - Apellido (texto hasta 50 caracteres)
-    - DNI (numero entero)
-    - Email (texto con @)
-    - Cargo (texto hasta 50 caracteres)
-    - Fecha de Nacimiento (formato anio-mes-dia, ej: 1973-07-06).
 
-Cliente:
-    - Cargar nombre de Cliente (texto hasta 50 caracteres)
-    - Direccion (texto hasta 50 caracteres)
-    - Pedido (texto hasta 50 caracteres)
-    - Estado ((texto hasta 50 caracteres, ej: Activo/Inactivo)
-
-Producto:
-    - Codigo (numero entero)
-    - Descripcion (texto hasta 50 caracteres)
-    - Cantidad (numero entero)
-
-Cuando se finaliza la carga, el programa llama a una pagina con un mensaje indicando la carga correcta.
-
-Busqueda:
-	Para el modulo de busqueda, esta definido por el momento solo para "Clientes". Se debe indicar el noombre
-	a buscar, y el programa, en caso de encontrarlo, devolvera el nombre y estado. EN caso de no estar cargado 
-	en la base de datos, devolvera un mensaje que no fue encontrado.
 
 
 Base de Datos SQLite
-    superuser: admin
-    password: admin
+    superuser: jgranata
+    password: jgranata
