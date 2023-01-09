@@ -1,0 +1,35 @@
+{% extends "AppMaster/padre.html" %}
+
+{% load static %}
+
+{% block titulo %}
+<a class="btn btn-primary" href="{% url 'msg_new' %}">Crear nuevo Mensaje</a><br><br>
+
+<p class="text-center text-white"> {{  mensaje  }} </p>
+
+<h1 class="mb-5">Listados de Mensajes {{ user }} {{ user.pk }}</h1>
+
+<div class="post">
+
+    {% for msgs in msgs %}
+    <p> Fecha: {{ msgs.published_date }}</p>
+    <p> Para: {{ msgs.userto }}</p>
+    <p> De: {{ msgs.userfrom }}</p>     
+    <p> Subject: {{ msgs.subject }}</p>
+    <p> Texto: {{ msgs.text|linebreaksbr }}</p>
+
+    <p> Valor de PK: {{ msgs.pk }} o con ID: {{ user.pk}}</p>
+    
+    <a class="btn btn-primary" href="{% url 'msg_edit' msgs.pk %}">Editar</a>
+    <a class="btn btn-primary" href="{% url 'msg_delete' msgs.pk %}">Borrar</a>
+    <p>----------------------------------------</p>
+
+    {% endfor %}
+
+</div>
+
+{% endblock %}
+
+{% block contenido_que_cambia %}
+
+{% endblock %}

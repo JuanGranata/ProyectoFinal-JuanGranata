@@ -23,9 +23,9 @@
             <div class="container">
                 <a class="btn btn-primary" href="{% url 'inicio' %}">Pagina Principal</a>
                 <a class="btn btn-primary" href="{% url 'usuario' %}">Usuarios</a>
-                <a class="btn btn-primary" href="{% url 'post_list' %}">Blog</a>
+                <a class="btn btn-primary" href="{% url 'post_list' %}">Posts</a>
                 <a class="btn btn-primary" href="{% url 'aboutme' %}">Acerca de</a>
-                <a class="btn btn-primary" href="{% url 'buscaruser' %}">Mensajes</a>
+                <a class="btn btn-primary" href="{% url 'msg_list' %}">Mensajes</a>
                 {% if user.is_authenticated %}
                 <h2> Hola {{ user.username }}</h2>
                 <img src="{{ imagen }}" alt="">

@@ -1,0 +1,31 @@
+{% extends "AppMaster/padre.html" %}
+
+{% load static %}
+
+{% block titulo %}
+<h1 class="mb-5">Detalle del Mensaje</h1>
+
+<div class="post">
+
+    {% if msgs.published_date %}
+        <div class="date"> Fecha: {{ msgs.published_date }} </div>
+    {% endif %}
+    
+    <h3>Para: {{ msgs.userto }}</h3>
+    <h3>De: {{ msgs.userfrom }}</h3>   
+    <h3>Subject: {{ msgs.subject }}</h3>
+    
+    <p>Texto: {{ msgs.text|linebreaksbr }}</p>
+
+    <p> Valor de PK: {{ msgs.pk }} o con ID: {{ user.pk}}</p>
+
+    <a class="btn btn-primary" href="{% url 'msg_edit' msgs.pk %}">Editar</a>
+    <a class="btn btn-primary" href="{% url 'msg_list' %}">Volver</a>
+
+</div>
+
+{% endblock %}
+
+{% block contenido_que_cambia %}
+
+{% endblock %}

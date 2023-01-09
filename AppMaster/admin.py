@@ -5,7 +5,6 @@ from .models import *
 
 admin.site.register(Post)
 admin.site.register(Avatar)
-admin.site.register(Mensaje)
 admin.site.register(UserExt)
 
 

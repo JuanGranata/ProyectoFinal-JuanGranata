@@ -1,0 +1,24 @@
+{% extends "AppMaster/padre.html" %}
+
+{% load static %}
+
+{% block titulo %}
+
+<h1 class="mb-5">Mensaje</h1>
+
+<form method="POST" class="post-form"> {% csrf_token %}
+
+    {{ form.as_p }}
+
+    <input class="btn btn-primary" type="submit" value="Guardar"> <br>
+    <a class="btn btn-primary" href="{% url 'msg_list' %}">Listar Post</a>
+
+</form>
+
+
+
+{% endblock %}
+
+{% block contenido_que_cambia %}
+
+{% endblock %}

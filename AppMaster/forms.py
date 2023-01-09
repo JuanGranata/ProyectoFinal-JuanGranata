@@ -53,10 +53,3 @@ class PostForm(forms.ModelForm):
     class Meta:
         model = Post
         fields = ('author', 'title', 'text')
-
-class MsgForm(forms.ModelForm):
-    date = forms.DateTimeField(initial=timezone.now)
-	
-    class Meta:
-        model = Msg
-        fields = ('userto', 'userfrom','subject', 'text')

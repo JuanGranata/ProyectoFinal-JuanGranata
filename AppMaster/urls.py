@@ -1,4 +1,3 @@
-
 from django.urls import path
 from AppMaster.views import *
 from django.contrib.auth.views import LogoutView
@@ -25,5 +24,7 @@ urlpatterns = [
     path('post_new/', post_new, name='post_new'),
 	path('post/<int:pk>/edit/', post_edit, name='post_edit'),
     path('post/<int:pk>/delete/', post_delete, name='post_delete'),
-            
+
+
+
 ]
