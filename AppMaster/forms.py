@@ -17,15 +17,17 @@ class RegistroUsuarioForm(UserCreationForm):
         fields = ["username", "email", "first_name", "last_name", "password1", "password2"]
         help_texts = {k:"" for k in fields} #para cada uno de los campos del formulario, le asigna un valor vacio
 
-class RegExtForm(UserCreationForm):
+class RegExtForm(forms.ModelForm):
+    #model = User
     #agregue email y personalice el mensaje de contrasenia
     email = forms.EmailField()
-    password1= forms.CharField(label="Ingrese Contraseña", widget=forms.PasswordInput)
-    password2= forms.CharField(label="Repita Contraseña", widget=forms.PasswordInput)
+    #password= forms.CharField(label="Ingrese Contraseña", widget=forms.PasswordInput, required=False)
+    #password2= forms.CharField(label="Repita Contraseña", widget=forms.PasswordInput, required=False)
     
     class Meta:
         model = User
-        fields = ["username", "email", "first_name", "last_name"]
+        fields = ["username","email", "first_name", "last_name"]
+
 
 class UsuForm(forms.Form):
     usuario = forms.CharField(max_length=15)
@@ -49,7 +51,7 @@ class UserEditForm(UserCreationForm):
 		
 class PostForm(forms.ModelForm):
     date = forms.DateTimeField(initial=timezone.now)
-	
+    
     class Meta:
         model = Post
         fields = ('author', 'title', 'text')

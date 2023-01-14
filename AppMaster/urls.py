@@ -1,6 +1,10 @@
-from django.urls import path
+from django.urls import path, include
+from django.conf import settings
+from django.contrib import admin
 from AppMaster.views import *
-from django.contrib.auth.views import LogoutView
+from django.contrib.auth.views import LoginView, LogoutView
+from django.conf.urls.static import static
+
 
 urlpatterns = [
    
@@ -12,10 +16,10 @@ urlpatterns = [
     path("usuario/", usuario, name="usuario"),
     path('register/', register, name='register'),
     path('listarusuarios/', listarusuarios, name="listarusuarios"),
-    path('detalleUsuario/<id>/', detalleUsuario, name="detalleUsuario"),
+    path('detalleUsuario/<id>', detalleUsuario, name="detalleUsuario"),
     path("buscaruser/", buscaruser, name="buscaruser"),
-    path("editarUsuario/<id>/", editarUsuario, name="editarUsuario"),
-    path("eliminarUsuario/<id>/", eliminarUsuario, name="eliminarUsuario"),
+    path("editarUsuario/<id>", editarUsuario, name="editarUsuario"),
+    path("eliminarUsuario/<id>", eliminarUsuario, name="eliminarUsuario"),
     path('login/', login_request, name='login'),
     path('logout/', LogoutView.as_view(), name='logout'),
 
@@ -25,6 +29,8 @@ urlpatterns = [
 	path('post/<int:pk>/edit/', post_edit, name='post_edit'),
     path('post/<int:pk>/delete/', post_delete, name='post_delete'),
 
-
+    path("addAvatar/", addAvatar, name="addAvatar"),
 
 ]
+
+urlpatterns+=static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

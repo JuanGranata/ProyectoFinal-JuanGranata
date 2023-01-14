@@ -17,11 +17,13 @@
         Nombre: {{ user.first_name }} <br>    
         Apellido: {{ user.last_name }}  <br>
         Email: {{ user.email }}  <br>
-        <p>---------------------------------------------------------</p>
-        <br>   
-    </ul>
+    <br>    
     <a class="btn btn-danger" href="{% url 'eliminarUsuario' user.id %}">Borrar</a>
     <a class="btn btn-danger" href="{% url 'editarUsuario' user.id %}">Editar</a>
+    <br>
+    <p>---------------------------------------------------------</p>
+    <br>   
+</ul>
     {% endfor %}
 
 </ul>

@@ -9,7 +9,7 @@
 <div class="POST">
 
         <br>
-       <p> ID: {{ user.pk }} <br> </p>
+       <p> ID: {{ user.id }} <br> </p>
        <p> Username: {{ user.username }} <br> </p>
        <p> Nombre: {{ user.first_name }} <br> </p>   
        <p> Apellido: {{ user.last_name }}  <br> </p>
@@ -17,7 +17,7 @@
         <p>---------------------------------------------------------</p>
         <br>   
     <a class="btn btn-danger" href="{% url 'eliminarUsuario' user.id %}">Borrar</a>
-    <a class="btn btn-success" href="{% url 'editarUsuario' pk=user.pk %}">Editar</a>
+
 
 </div>
 <h3>{{ mensaje }}</h3>
