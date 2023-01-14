@@ -27,8 +27,9 @@
                 <a class="btn btn-primary" href="{% url 'aboutme' %}">Acerca de</a>
                 <a class="btn btn-primary" href="{% url 'msg_list' %}">Mensajes</a>
                 {% if user.is_authenticated %}
-                <h2> Hola {{ user.username }}</h2>
-                <img src="{{ imagen }}" alt="">
+                <img src="{{ (Avatar.objects.filter(user = request.user.id))[0].imagen.url) }}" />
+                <p class=" text-muted small mb-4 mb-lg-0"> Hola {{ user.username }}</p>
+                
                 <a class="btn btn-danger" href="{% url 'logout' %}">Desloguearme</a>
                 {% else %}
                 <a class="btn btn-primary" href="{% url 'login' %}">Login</a>

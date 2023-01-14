@@ -19,4 +19,4 @@ class Msg(models.Model):
         self.save()
 
     def __str__(self):
-        return f'{self.userto} - {self.userfrom} - {self.subject} - {self.text} - {self.published_date}'
+        return f'{self.userto} - {self.userfrom} - {self.subject} - {self.text} - {self.created_date}'
