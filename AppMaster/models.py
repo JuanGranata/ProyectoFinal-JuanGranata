@@ -8,18 +8,26 @@ from django.utils import timezone
 # Create your models here.
 # Creacion de modelos para la base de datos
 
-class UserExt(User):
+# class UserExt(User):
 
-    class Meta:
-        proxy = True
+#     class Meta:
+#         proxy = True
     
-    def __str__(self):
-        return f'{self.username} - {self.first_name} - {self.last_name} - {self.email} - {self.password}'
+#     def __str__(self):
+#         return f'{self.username} - {self.first_name} - {self.last_name} - {self.email}'
 
-#hago una copia de los users que se generan en User en mi modelo Usuario
+
+class Usuario(models.Model):
+    username=models.CharField(max_length=50)
+    name=models.CharField(max_length=50)
+    lastname=models.CharField(max_length=50)
+    email=models.EmailField()
+
+    def __str__(self):
+        return f'{self.username} - {self.name} - {self.lastname} - {self.email}'
 
 class Post(models.Model):
-    author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    author = models.ForeignKey(to=Usuario, on_delete=models.CASCADE)
     title = models.CharField(max_length=200)
     text = models.TextField()
     created_date = models.DateTimeField(default=timezone.now)
@@ -35,7 +43,10 @@ class Post(models.Model):
 
 class Avatar(models.Model):
     imagen=models.ImageField(upload_to='avatares')
-    user=models.ForeignKey(User, on_delete=models.CASCADE)
+    user=models.ForeignKey(Usuario, on_delete=models.CASCADE)
 
     def __str__(self):
         return f"{self.user} - {self.imagen}"
+
+
+

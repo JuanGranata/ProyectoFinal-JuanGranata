@@ -51,7 +51,7 @@ def aboutme(request):
     return render (request, "AppMaster/aboutme.html")
 
 # Modulo pagina usuario
-@login_required
+#@login_required
 def usuario(request):
     return render (request, "AppMaster/usuario.html")
 
@@ -65,7 +65,7 @@ def exitoso(request):
 #@login_required
 def register(request):
     if request.method=="POST":
-        form=RegistroUsuarioForm(request.POST)
+        form=RegExtForm(request.POST)
         if form.is_valid():
             username=form.cleaned_data.get("username")
             form.save()
@@ -75,78 +75,70 @@ def register(request):
             return render(request, "AppMaster/register.html", {"form":form, "mensaje":"Error al crear el usuario"})
         
     else:
-        form=RegistroUsuarioForm()
-
-    return render(request, "AppMaster/register.html", {"form":form})
+        form=RegExtForm()
+        return render(request, "AppMaster/register.html", {"form":form})
 
 # Modulos de buquedas de clinetes en la base de datos
-@login_required
+#@login_required
 def buscaruser(request):
     return render(request, "AppMaster/buscaruser.html")
 
 # Algoritmo de busqueda de usuario
-@login_required
+#@login_required
 def buscar(request):
     print("--->",request.GET)
     if "user" in request.GET:
         user=request.GET["user"]
         print("2----------->",user)
-        users=UserExt.objects.filter(username__icontains=user)
+        users=Usuario.objects.filter(username__icontains=user)
         print("3----------->",users)
         contexto={"user": users}
         return render(request,"AppMaster/resultadosBusqueda.html", contexto)
     else:
         return render(request, "AppMaster/buscaruser.html", {"mensaje":"Por favor ingresa el Usuario"})
 
-@login_required
+#@login_required
 def listarusuarios(request):
-    users=UserExt.objects.all()
+    users=Usuario.objects.all()
     contexto={"user":users}
     print("contexto--->", contexto)
     return render (request, "AppMaster/listarusuarios.html",contexto)
 
-@login_required
+#@login_required
 def eliminarUsuario(request, id):
-    usuario=get_object_or_404(UserExt, id=id)
+    usuario=get_object_or_404(Usuario, id=id)
     print('-->', usuario)
     usuario.delete()
-    user=UserExt.objects.all()
+    user=Usuario.objects.all()
     print('2--->', user)
     return render(request, "AppMaster/listarusuarios.html", {"mensaje":"Usuario eliminado correctamente", "user":user})
 
-@login_required
-def detalleUsuario(request, pk):
-	users = get_object_or_404(UserExt, pk=pk)
+#@login_required
+def detalleUsuario(request, id):
+	users = get_object_or_404(Usuario, id=id)
 	return render(request, 'AppMaster/detalleUsuario.html', {'user': users})
 
-@login_required
+#@login_required
+@login_required   
 def editarUsuario(request, id):
-    print("--->", usuario)
-    usu=get_object_or_404(UserExt, id=id)
-    print("2--->", usu)
+    usuario=Usuario.objects.get(id=id)
     if request.method=="POST":
-        form=RegExtForm(request.POST)
+        form=UsuForm(request.POST)
+        print(form)
         if form.is_valid():
-            #info=form.save(commit=False)
-            usu.first_name=form.cleaned_data.get("first_name")
-            usu.last_name=form.cleaned_data.get("lastt_name")
-            usu.email=form.cleaned_data.get("email")
-            usu.password1=form.cleaned_data.get("password1")
-            usu.password2=form.cleaned_data.get("password2")
-            usu.save()
-            print("3--->", usu)
-            return redirect("AppMaster/detalleUsuario.html", {'mensaje': 'cambio realizado con exito', 'id':usu.id})
-            
-        else:
-            print("---> error en el form")
-            form=RegExtForm(instance = usu)
-            print('--->', usu)
-            return render(request, "AppMaster/editarUsuario.html", {'mensaje': 'hay un error en formulario', "form":form, "id":usu.id})
+            informacion=form.cleaned_data
+            print(informacion)
+            usuario.id=informacion['id']
+            usuario.username=informacion["username"]            
+            usuario.name=informacion["name"]
+            usuario.lastname=informacion["lastname"]
+            usuario.email=informacion["email"]
+            usuario.save()
+            usuarios=Usuario.objects.get(id=id)
+            return render (request, "AppMaster/leerUsuario.html", {"mensaje": "Datos Modificados Correctamente!!", "usuarios":usuarios})
     else:
-        print("--GET-->", usu)
-        form=RegExtForm(instance = usu)
-    
-    return render(request, "AppMaster/editarUsuario.html", {'mensaje': 'entra por GET', "form":form, "id":usu.id})
+        form= UsuForm(initial={'id':usuario.id, "username":usuario.username,"name":usuario.name, "lastname":usuario.lastname, "email":usuario.email})
+    return render(request, "AppMaster/editarUsuario.html", {"form":form, "usuario":usuario})
 
 #----- seccion de login ------
 
@@ -173,7 +165,7 @@ def login_request(request):
 
 #Vistas para los posteos
 
-@login_required
+#@login_required
 def post_new(request):
     if request.method == "POST":
         form = PostForm(request.POST)
@@ -187,7 +179,7 @@ def post_new(request):
         form = PostForm()
         return render(request, 'AppMaster/post_edit.html', {'form': form})
 
-@login_required
+#@login_required
 def post_edit(request, pk):
     post = get_object_or_404(Post, pk=pk)
     if request.method == "POST":
@@ -202,21 +194,20 @@ def post_edit(request, pk):
         form = PostForm(instance=post)
     return render(request, 'AppMaster/post_edit.html', {'form': form})
 
-@login_required
+#@login_required
 def post_detail(request, pk):
 	posts = get_object_or_404(Post, pk=pk)
 	return render(request, 'AppMaster/post_detail.html', {'posts': posts})
 
-@login_required
+#@login_required
 def post_delete(request, pk):
     post=get_object_or_404(Post, pk=pk)
     post.delete()
     posts=Post.objects.all()
     return render(request, "AppMaster/post_list.html", {"mensaje":"Post eliminado correctamente", 'posts': posts})
 
-@login_required
+#@login_required
 def post_list(request):
 	posts = Post.objects.all()
 	return render(request, 'AppMaster/post_list.html', {'posts': posts})
 
- 

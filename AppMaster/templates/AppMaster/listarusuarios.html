@@ -14,14 +14,16 @@
         <br>
         ID: {{ user.id }} <br>
         Username: {{ user.username }} <br>
-        Nombre: {{ user.first_name }} <br>    
-        Apellido: {{ user.last_name }}  <br>
+        Nombre: {{ user.name }} <br>    
+        Apellido: {{ user.lastname }}  <br>
         Email: {{ user.email }}  <br>
-        <p>---------------------------------------------------------</p>
+    
         <br>   
     </ul>
     <a class="btn btn-danger" href="{% url 'eliminarUsuario' user.id %}">Borrar</a>
     <a class="btn btn-danger" href="{% url 'editarUsuario' user.id %}">Editar</a>
+    <br>
+    <p>---------------------------------------------------------</p>
     {% endfor %}
 
 </ul>

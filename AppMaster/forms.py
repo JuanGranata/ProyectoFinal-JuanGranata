@@ -6,8 +6,8 @@ from django.utils import timezone
 
 # Creacion de los formatos para las tablas dinamicas a ser usadas en los HTMLs
  
-class RegistroUsuarioForm(UserCreationForm):
-    #agregue email y personalice el mensaje de contrasenia
+class RegistroUsuarioForm(UserCreationForm): #registro para usuario en base User
+    
     email = forms.EmailField()
     password1= forms.CharField(label="Ingrese Contraseña", widget=forms.PasswordInput)
     password2= forms.CharField(label="Repita Contraseña", widget=forms.PasswordInput)
@@ -17,32 +17,28 @@ class RegistroUsuarioForm(UserCreationForm):
         fields = ["username", "email", "first_name", "last_name", "password1", "password2"]
         help_texts = {k:"" for k in fields} #para cada uno de los campos del formulario, le asigna un valor vacio
 
-class RegExtForm(UserCreationForm):
-    #agregue email y personalice el mensaje de contrasenia
-    email = forms.EmailField()
-    password1= forms.CharField(label="Ingrese Contraseña", widget=forms.PasswordInput)
-    password2= forms.CharField(label="Repita Contraseña", widget=forms.PasswordInput)
+class RegExtForm(forms.ModelForm): #registro para usuario en base Usuario
+    # email = forms.EmailField()
     
     class Meta:
-        model = User
-        fields = ["username", "email", "first_name", "last_name"]
+        model = Usuario
+        fields = ["username", "name", "lastname", "email"]
 
 class UsuForm(forms.Form):
-    usuario = forms.CharField(max_length=15)
-    nombre = forms.CharField(max_length=50)
-    apellido = forms.CharField(max_length=50)
+    id=forms.IntegerField()
+    username = forms.CharField(max_length=50)
+    name = forms.CharField(max_length=50)
+    lastname = forms.CharField(max_length=50)
     email = forms.EmailField()
 
 class AvatarForm(forms.Form):
     imagen=forms.ImageField(label="Imagen")
 
-class UserEditForm(UserCreationForm):
-    username = forms.CharField(label='Usuario')
-    first_name = forms.CharField(label='Nombre')
-    last_name = forms.CharField(label='Apellido')
-    email = forms.EmailField()
-    password1 = forms.CharField(label="Ingrese Contraseña", widget=forms.PasswordInput)
-    password2 = forms.CharField(label="Repita Contraseña", widget=forms.PasswordInput)
+# class UserEditForm(Usuario):
+#     username = forms.CharField(label='Usuario')
+#     name = forms.CharField(label='Nombre')
+#     lastname = forms.CharField(label='Apellido')
+#     email = forms.EmailField()
 
 
 #nuevo form para los posteos

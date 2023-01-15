@@ -8,22 +8,26 @@
 {% if user %}
 <div class="POST">
 
+    <h3>{{ mensaje }}</h3>
+
         <br>
-       <p> ID: {{ user.pk }} <br> </p>
+       <p> ID: {{ user.id }} <br> </p>
        <p> Username: {{ user.username }} <br> </p>
-       <p> Nombre: {{ user.first_name }} <br> </p>   
-       <p> Apellido: {{ user.last_name }}  <br> </p>
+       <p> Nombre: {{ user.name }} <br> </p>   
+       <p> Apellido: {{ user.lastname }}  <br> </p>
        <p> Email: {{ user.email }}  <br> </p>
         <p>---------------------------------------------------------</p>
         <br>   
     <a class="btn btn-danger" href="{% url 'eliminarUsuario' user.id %}">Borrar</a>
-    <a class="btn btn-success" href="{% url 'editarUsuario' pk=user.pk %}">Editar</a>
+    <a class="btn btn-primary" href="{% url 'listarusuarios' %}">Volver</a>  
 
 </div>
-<h3>{{ mensaje }}</h3>
+
+{% else %}
+<h3> Error, no hay User</h3>
 {% endif %}
 
-<h3> Error, no hay User</h3>
+
 
 {% endblock %}
 

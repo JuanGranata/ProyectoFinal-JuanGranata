@@ -24,7 +24,7 @@ def exitoso(request):
 
 #-------------Mensajes------------------
 
-@login_required
+#@login_required
 def msg_new(request):
     if request.method == "POST":
         form = MsgForm(request.POST)
@@ -41,14 +41,14 @@ def msg_new(request):
         form = MsgForm()
         return render(request, 'AppMaster/msg_edit.html', {'form': form})
 
-@login_required
+#@login_required
 def msg_list(request):
     user = request.user
     print('--->', user)
     msgs = Msg.objects.filter(userto=user)
     return render(request, 'AppMaster/msg_list.html', {'msgs': msgs})
 
-@login_required
+#@login_required
 def msg_edit(request, pk):
     #msg = get_object_or_404(Msg, pk=pk)
     msg = Msg.objects.get(pk=pk)
@@ -68,14 +68,14 @@ def msg_edit(request, pk):
         form = MsgForm(instance=msg)
         return render(request, 'AppMaster/msg_edit.html', {'form': form})
 
-@login_required
+#@login_required
 def msg_detail(request, pk):
 	#msgs = get_object_or_404(Msg, userto=user)
     msgs = Msg.objects.filter(pk=pk)
     print('--detail-->', pk)
     return render(request, 'AppMaster/msg_detail.html', {'msgs': msgs})
 
-@login_required
+#@login_required
 def msg_delete(request, pk):
     msg=get_object_or_404(Msg, pk=pk)
     msg.delete()

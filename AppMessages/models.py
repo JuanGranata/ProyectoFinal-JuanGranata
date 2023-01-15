@@ -3,12 +3,13 @@ from django.contrib.auth.models import User
 from django.utils.timezone import timezone
 from django.conf import settings
 from django.utils import timezone
+from AppMaster.models import Usuario
 
 # Create your models here.
 
 class Msg(models.Model):
     userfrom = models.CharField(max_length=15)
-    userto = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    userto = models.ForeignKey(to=Usuario, on_delete=models.CASCADE)
     subject = models.CharField(max_length=50)
     text = models.TextField()
     created_date = models.DateTimeField(default=timezone.now)

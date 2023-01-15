@@ -15,6 +15,9 @@ Consigna: Se tiene que crear una Web semejante a un Blog, dicha web deberá cont
 ✔	Piezas sugeridas, no hace falta que estén todas, pero tiene que haber por lo menos un CRUD completo y el módulo de Login debe ser sólido:
 
 --------------------------------------------------------------------------------------------------------
+Esta version ya tiene funcionando el modulo de Usuarios (creacion, busqueda, edicion, listar y borrar), el modulo de post donde 
+se puede crear, editar, listar y borrar).
+El modulo Mensajes, esta presentando desperfectos tecnicos, estamos trabajando para solucionarlo a la brevedad...!!!
 
 Set de pruebas segun cada vista:
 
