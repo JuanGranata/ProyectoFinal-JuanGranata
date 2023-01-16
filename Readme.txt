@@ -18,8 +18,9 @@ Consigna: Se tiene que crear una Web semejante a un Blog, dicha web deberá cont
 Esta version ya tiene funcionando el modulo de Usuarios (creacion, busqueda, edicion, listar y borrar), el modulo de post donde 
 se puede crear, editar, listar y borrar).
 El modulo Mensajes, esta presentando desperfectos tecnicos, estamos trabajando para solucionarlo a la brevedad...!!!
+AUn no esta habilitada la autenticacion de usuario SuperUser para borrar y editar en los modulos, ni subir AVATARS a los usuarios e imagenes en los post
 
-Set de pruebas segun cada vista:
+Set de pruebas segun cada vista: AUn no disponible
 
 
 

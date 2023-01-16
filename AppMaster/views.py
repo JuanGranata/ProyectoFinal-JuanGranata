@@ -166,18 +166,24 @@ def login_request(request):
 #Vistas para los posteos
 
 #@login_required
-def post_new(request):
-    if request.method == "POST":
-        form = PostForm(request.POST)
-        if form.is_valid():
-            post = form.save(commit=False)
-            post.author = request.user.authenticate
-            post.published_date = timezone.now()
-            post.save()
-            return redirect('post_detail', pk=post.pk)
-    else:
-        form = PostForm()
-        return render(request, 'AppMaster/post_edit.html', {'form': form})
+# def post_new(request):
+#     if request.method == "post":
+#         form = PostForm(request.post)
+#         print('--request-->', form)
+#         if form.is_valid():
+#             posteo = form.cleaned_data
+#             post.author = posteo.usuario.username
+#             post.published_date = timezone.now()
+#             post.save()
+#             return redirect('post_detail', post.pk)
+#     else:
+#         form = PostForm()
+#         return render(request, 'AppMaster/post_new.html', {'form': form})
+
+class post_new(CreateView):
+    model = Post
+    success_url = reverse_lazy('post_list')
+    fields=['author', 'title', 'text', 'created_date']
 
 #@login_required
 def post_edit(request, pk):
@@ -186,7 +192,7 @@ def post_edit(request, pk):
         form = PostForm(request.POST, instance=post)
         if form.is_valid():
             post = form.save(commit=False)
-            post.author = request.user
+            post.author = request.author
             post.published_date = timezone.now()
             post.save()
             return redirect('post_detail', pk=post.pk)

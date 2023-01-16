@@ -12,12 +12,11 @@
 <div class="post">
 
     {% for posts in posts %}
-    <div class="date">Fecha: {{ posts.published_date }}</div>
-    <p> Autor: {{ posts.author }}</p>     
+    <div class="date">Fecha: {{ posts.created_date }}</div>
+    <p> Autor: {{ posts.author.username }}</p>     
     <p> Titulo: {{ posts.title }}</p>
-    <p>Texto: {{ posts.text|linebreaksbr }}</p>
     
-    <a class="btn btn-primary" href="{% url 'post_edit' pk=posts.pk %}">Editar</a>
+    <a class="btn btn-primary" href="{% url 'post_detail' pk=posts.pk %}">Leer</a>
     <a class="btn btn-primary" href="{% url 'post_delete' pk=posts.pk %}">Borrar</a>
     <p>----------------------------------------</p>
 

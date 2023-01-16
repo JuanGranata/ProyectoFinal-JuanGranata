@@ -3,24 +3,20 @@
 {% load static %}
 
 {% block titulo %}
-<h1 class="mb-5">Detalles de Post</h1>
+<h1 class="mb-5">Post Completo</h1>
 
 <div class="post">
 
-    {% if posts.published_date %}
-        <div class="date">
-            {{ posts.published_date }}
-        </div>
-    {% endif %}
-    
-       
-    <h2>{{ posts.title }}</h2>
-    
-    <p>{{ posts.text|linebreaksbr }}</p>
+    {% if posts.created_date %}
+    <div class="date">Fecha: {{ posts.created_date }}</div>
+    <p> Autor: {{ posts.author.username }}</p>     
+    <p> Titulo: {{ posts.title }}</p>
+    <p> Texto: {{ posts.text|linebreaksbr }}</p>
+ 
 
-    <a class="btn btn-primary" href="{% url 'post_edit' pk=posts.pk %}">Editar</a>
     <a class="btn btn-primary" href="{% url 'post_list' %}">Volver</a>
 
+    {% endif %}
 </div>
 
 {% endblock %}

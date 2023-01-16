@@ -27,7 +27,7 @@ class Usuario(models.Model):
         return f'{self.username} - {self.name} - {self.lastname} - {self.email}'
 
 class Post(models.Model):
-    author = models.ForeignKey(to=Usuario, on_delete=models.CASCADE)
+    author = models.ForeignKey(Usuario, on_delete=models.CASCADE)
     title = models.CharField(max_length=200)
     text = models.TextField()
     created_date = models.DateTimeField(default=timezone.now)
