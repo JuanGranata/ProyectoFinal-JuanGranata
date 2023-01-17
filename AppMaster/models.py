@@ -4,19 +4,6 @@ from django.utils.timezone import timezone
 from django.conf import settings
 from django.utils import timezone
 
-
-# Create your models here.
-# Creacion de modelos para la base de datos
-
-# class UserExt(User):
-
-#     class Meta:
-#         proxy = True
-    
-#     def __str__(self):
-#         return f'{self.username} - {self.first_name} - {self.last_name} - {self.email}'
-
-
 class Usuario(models.Model):
     username=models.CharField(max_length=50)
     name=models.CharField(max_length=50)
@@ -42,9 +29,16 @@ class Post(models.Model):
 
 
 class Avatar(models.Model):
-    imagen=models.ImageField(upload_to='avatares')
     user=models.ForeignKey(Usuario, on_delete=models.CASCADE)
+    imagen=models.ImageField(upload_to='avatares', null=True, blank=True)
+    
+    def __str__(self):
+        return f"{self.user} - {self.imagen}"
 
+class AvatarSuper(models.Model):
+    user=models.ForeignKey(User, on_delete=models.CASCADE)
+    imagen=models.ImageField(upload_to='avatares', null=True, blank=True)
+    
     def __str__(self):
         return f"{self.user} - {self.imagen}"
 

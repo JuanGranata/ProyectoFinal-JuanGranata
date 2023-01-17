@@ -43,25 +43,21 @@ def nuevoAvatar(request):
 # Modulo de inicio
 #@login_required
 def inicio(request):
-    #lista=Avatar.objects.filter(user=request.user)
-    return render (request, "AppMaster/inicio.html")
+    avatares = AvatarSuper.objects.filter(user=request.user.id)
+    print('--ID-->', request.user.id)
+    return render (request, "AppMaster/padre.html", {"imagen":avatares[0].imagen.url})
 
 # Modulo about me
 def aboutme(request):
     return render (request, "AppMaster/aboutme.html")
 
-# Modulo pagina usuario
-#@login_required
-def usuario(request):
-    return render (request, "AppMaster/usuario.html")
-
 # Modulo mensaje exitoso
 def exitoso(request):
     return render (request, "AppMaster/exitoso.html")
 
-    return render (request, "AppMaster/crearuser.html", {"form":formulario})
 
-#modulo para registro de usuarios
+#---------------------------------------------------------------------------------------------------------------------
+# Modulo para registro de usuarios
 #@login_required
 def register(request):
     if request.method=="POST":
@@ -78,12 +74,14 @@ def register(request):
         form=RegExtForm()
         return render(request, "AppMaster/register.html", {"form":form})
 
-# Modulos de buquedas de clinetes en la base de datos
+#@login_required
+def usuario(request):
+    return render (request, "AppMaster/usuario.html")
+    
 #@login_required
 def buscaruser(request):
     return render(request, "AppMaster/buscaruser.html")
 
-# Algoritmo de busqueda de usuario
 #@login_required
 def buscar(request):
     print("--->",request.GET)
@@ -118,8 +116,7 @@ def detalleUsuario(request, id):
 	users = get_object_or_404(Usuario, id=id)
 	return render(request, 'AppMaster/detalleUsuario.html', {'user': users})
 
-#@login_required
-@login_required   
+#@login_required   
 def editarUsuario(request, id):
     usuario=Usuario.objects.get(id=id)
     if request.method=="POST":
@@ -140,7 +137,8 @@ def editarUsuario(request, id):
         form= UsuForm(initial={'id':usuario.id, "username":usuario.username,"name":usuario.name, "lastname":usuario.lastname, "email":usuario.email})
     return render(request, "AppMaster/editarUsuario.html", {"form":form, "usuario":usuario})
 
-#----- seccion de login ------
+#------------------------------------------------------------------------------------------------------------------------
+# Modulo de login
 
 def login_request(request):
     if request.method == "POST":
@@ -163,22 +161,8 @@ def login_request(request):
         form = AuthenticationForm()
     return render(request, "AppMaster/login.html", {"form":form})
 
+#-----------------------------------------------------------------------------------------------------------------------
 #Vistas para los posteos
-
-#@login_required
-# def post_new(request):
-#     if request.method == "post":
-#         form = PostForm(request.post)
-#         print('--request-->', form)
-#         if form.is_valid():
-#             posteo = form.cleaned_data
-#             post.author = posteo.usuario.username
-#             post.published_date = timezone.now()
-#             post.save()
-#             return redirect('post_detail', post.pk)
-#     else:
-#         form = PostForm()
-#         return render(request, 'AppMaster/post_new.html', {'form': form})
 
 class post_new(CreateView):
     model = Post
@@ -217,3 +201,19 @@ def post_list(request):
 	posts = Post.objects.all()
 	return render(request, 'AppMaster/post_list.html', {'posts': posts})
 
+#---------------------------------------------------------------------------------------------------------------
+#registro de Superuser
+
+def registerSuper(request):
+    if request.method=="POST":
+        form=UserCreationForm(request.POST)
+        if form.is_valid():
+            username=form.cleaned_data.get("username")
+            form.save()
+            return render(request, "AppMaster/exitoso.html", {"mensaje":f"SuperUser {username} creado correctamente"})
+        else:
+            return render(request, "AppMaster/registerSuper.html", {"form":form, "mensaje":"Error al crear el SuperUser"})
+        
+    else:
+        form=RegExtForm()
+        return render(request, "AppMaster/registerSuper.html", {"form":form})

@@ -5,7 +5,7 @@ from .models import *
 
 admin.site.register(Post)
 admin.site.register(Avatar)
-#admin.site.register(UserExt)
+admin.site.register(AvatarSuper)
 admin.site.register(Usuario)
 
 

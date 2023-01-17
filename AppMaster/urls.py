@@ -11,6 +11,7 @@ urlpatterns = [
     
     path("usuario/", usuario, name="usuario"),
     path('register/', register, name='register'),
+    path('registerSuper/', registerSuper, name='registerSuper'),
     path('listarusuarios/', listarusuarios, name="listarusuarios"),
     path('detalleUsuario/<id>/', detalleUsuario, name="detalleUsuario"),
     path("buscaruser/", buscaruser, name="buscaruser"),
@@ -25,7 +26,5 @@ urlpatterns = [
     path('post_new/', post_new.as_view(), name='post_new'),
 	path('post/<int:pk>/edit/', post_edit, name='post_edit'),
     path('post/<int:pk>/delete/', post_delete, name='post_delete'),
-
-
 
 ]
