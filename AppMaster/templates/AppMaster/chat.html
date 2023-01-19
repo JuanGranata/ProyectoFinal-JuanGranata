@@ -1,0 +1,42 @@
+{% extends "AppMaster/padre.html" %}
+
+{% load static %}
+
+{% block titulo %}
+
+<section class="s-content s-content--narrow">
+
+    <div class="row">
+
+        <div class="s-content__header col-full">
+            <h1 class="s-content__header-title">
+                Mensaje rapido (chat)
+            </h1>
+            <h2>
+                De: {{ message.sender }}
+            </h2>
+            <h3>
+                Asunto: {{ message.subject }}
+            </h3>
+            <p>
+                Fecha: {{ message.date }}
+            </p>
+            <p>
+                {{ message.content}}
+            </p>    
+        </div>
+
+
+        <div class="s-content__header col-full">
+            <a class="btn btn-primary" href="/respond/{{ message.sender }}">Responder</a>
+        </div>
+
+    </div>
+
+</section>
+
+{% endblock %}
+
+{% block contenido_que_cambia %}
+
+{% endblock %}

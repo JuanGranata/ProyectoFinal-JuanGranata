@@ -3,12 +3,14 @@
 {% load static %}
 
 {% block titulo %}
-<h1 class="mb-5">Editar Usuario</h1>
+<h1 class="mb-5">Editar Usuario</h1><br>
+<h3>Por favor introduzca el password para avanzar</h3><br>
 {% if user %}
 <form method="POST" class="post-form"> {% csrf_token %}
 
     {{ form.as_p }}
     
+    <br>
     <input type="submit" value="MODIFICAR USUARIO">
     
     

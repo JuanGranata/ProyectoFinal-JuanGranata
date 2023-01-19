@@ -1,0 +1,53 @@
+{% extends "AppMaster/padre.html" %}
+
+{% load static %}
+
+{% block titulo %}
+
+<section class="s-content s-content--narrow">
+
+    <div class="row">
+
+        <div class="s-content__header col-full">
+            <h1 class="s-content__header-title">
+                Mensajes
+            </h1>
+            <h2>
+                <p>Bandeja de entrada:</p>
+            </h2>
+            <p>
+                {% for mensaje in for_me %}
+                <p>
+                    <a href="/chat/{{ mensaje.id }}">{{ mensaje.view }} | {{ mensaje.date }} | {{ mensaje.is_seen }}</a>
+                </p>
+                {% endfor %}
+            </p>
+
+            <h2>
+                <p>Enviados:</p>
+            </h2>
+            <p>
+                {% for mensaje in from_me %}
+                <p>
+                    <a href="/chat/{{ mensaje.id }}">{{ mensaje.view }} | {{ mensaje.date }} | {{ mensaje.is_seen }}</a>
+                </p>
+                {% endfor %}
+            </p>
+            
+
+
+
+        </div> 
+
+        <a class="btn btn-primary" href="{% url 'new_message' %}">Escribir Nuevo Mensaje</a>
+
+
+    </div> 
+
+</section> 
+
+{% endblock %}
+
+{% block contenido_que_cambia %}
+
+{% endblock %}

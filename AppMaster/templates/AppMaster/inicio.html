@@ -3,13 +3,19 @@
 {% load static %}
 
 {% block titulo %}
+<img height="90px" src= '/media/{{ avatar }}' alt="">
+<br>
 <h1>PAGINA DE INICIO <br> Proyecto Final <br> Juan Granata</h1>
 <h2 class="text-center">Por favor selecciona una opcion</h2>
+<br>
+
+<h2> {{ mensaje }} </h2>
+
 {% endblock %}
 
 {% block contenido_que_cambia %}
 
 
-{{ mensaje }}
+
 
 {% endblock %}

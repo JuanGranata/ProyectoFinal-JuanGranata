@@ -5,12 +5,16 @@
 
 {% block titulo %}
 {% if user.is_authenticated %}
-    <h2> Usuario: {{ user.username }}</h2>
+    
+    <img height="90px" src= '/media/{{ user.profile.avatar }}' alt=""><br>
+
+    <h2> Usuario: {{ user.username }}</h2><br>
 
     <nav class="navbar navbar-light">
         <a class="btn btn-primary" href="{% url 'register' %}">Crear</a>
         <a class="btn btn-primary" href="{% url 'buscar' %}">Buscar</a>
-        <a class="btn btn-primary" href="{% url 'listarusuarios' %}">Listar</a>    
+        <a class="btn btn-primary" href="{% url 'listarusuarios' %}">Listar</a>
+        <a class="btn btn-primary" href="{% url 'editarUsuario' %}">Editar Profile</a>    
     </nav>
 
 {% else %}

@@ -1,0 +1,48 @@
+{% extends "AppMaster/padre.html" %}
+
+{% load static %}
+
+{% block titulo %}
+<section class="s-content s-content--narrow">
+
+    <div class="row">
+
+        <div class="s-content__header col-full">
+            <h2>
+                {{ mensaje2 }}
+            </h2>
+            <h1 class="s-content__header-title">
+                Editar Perfil
+            </h1>
+            <h2>
+                <p>Usuario: {{ user.username }}</p>
+            </h2>
+            <br>
+            <h3>Por favor introduzca el password para avanzar</h3>
+            <br>
+        </div>
+
+        <div class="col-full s-content__main">
+
+            <form name="cForm" id="cForm" method="POST" action="{% url 'profile_edit' %}" align='center' enctype='multipart/form-data'>
+                {% csrf_token %}
+                    <div align='center'>
+                    {{form.as_p}}
+                    </div>
+                <input type='submit' value='Enviar datos'>
+            </form>
+
+        </div>
+
+    </div>
+
+</section>
+
+{% endblock %}
+
+{% block contenido_que_cambia %}
+
+
+
+
+{% endblock %}

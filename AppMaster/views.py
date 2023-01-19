@@ -1,51 +1,50 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import *
-from .forms import PostForm
-from django.http import HttpResponse
+from .forms import PostForm, ProfileEditForm, UserRegisterForm
 from AppMaster.forms import *
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
-from django.contrib.auth.forms import AuthenticationForm, UserCreationForm, User
+from django.views.generic import ListView, DetailView, CreateView, DeleteView
+from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.contrib.auth import login, authenticate, logout
 from django.urls import reverse_lazy
 from django.utils import timezone
-
+from django.views.generic.edit import UpdateView
 
 # Create your views here.
 
-def addAvatar(request):
+def agregarAvatarSuper(request):
     if request.method=="POST":
         form=AvatarForm(request.POST, request.FILES)#ademas del post, como trae archivos (yo se que trae archivos xq conozco el form, tengo q usar request.files)
         if form.is_valid():
-            avatarViejo=Avatar.objects.filter(user=request.user)
+            print('-- user-->', request.user)
+            avatarViejo=AvatarSuper.objects.filter(user=request.user)
             if len(avatarViejo)!=0:
                 avatarViejo[0].delete()
-            avatar=Avatar(user=request.user, imagen=request.FILES["imagen"])
+            avatar=AvatarSuper(user=request.user, imagen=request.FILES["imagen"])
             avatar.save()
             return render(request, "AppMaster/inicio.html", {"mensaje":"Avatar agregado correctamente"})
         else:
-            return render(request, "AppMaster/addAvatar.html", {"formulario": form, "usuario": request.user})
+            return render(request, "AppMaster/AgregarAvatarSuper.html", {"form": form, "user": request.user})
     else:
         form=AvatarForm()
-        return render(request , "AppMaster/addAvatar.html", {"formulario": form, "usuario": request.user})
+        return render(request , "AppMaster/AgregarAvatarSuper.html", {"form": form, "user": request.user})
 
-#Modulo Avatar
-def nuevoAvatar(request):
-    lista=Avatar.objects.filter(user=request.user)
-    if len(lista)!=0:
-        imagen=lista[0].imagen.url
-    else:
-        imagen="/media/avatares/avatarpordefecto.png"
-    return imagen
 
 # Modulo de inicio
 #@login_required
 def inicio(request):
-    avatares = AvatarSuper.objects.filter(user=request.user.id)
-    print('--ID-->', request.user.id)
-    return render (request, "AppMaster/padre.html", {"imagen":avatares[0].imagen.url})
+    usuario = (request.user)
+    print('--usuario-->', usuario.profile.user)
+    imagen=Profile.objects.filter(user=usuario)
+    print('--imagen-->', imagen)
+    if usuario:
+        avatar=imagen[0].avatar
+
+    else:
+        avatar = "media/avatares/avatarpordefecto.png"
+    return render (request, "AppMaster/inicio.html", {"avatar":avatar})
 
 # Modulo about me
 def aboutme(request):
@@ -61,18 +60,25 @@ def exitoso(request):
 #@login_required
 def register(request):
     if request.method=="POST":
-        form=RegExtForm(request.POST)
+        form=UserRegisterForm(request.POST)
         if form.is_valid():
             username=form.cleaned_data.get("username")
             form.save()
-            #aca se podria loguear el usuario, con authenticate y login... pero no lo hago
-            return render(request, "AppMaster/exitoso.html", {"mensaje":f"Usuario {username} creado correctamente"})
+            usuario = User.objects.get(username=username)
+            profile = Profile.objects.create(user = usuario)
+            profile.save()
+
+            form2 = AuthenticationForm()
+            print('--> sale a login_request')
+            return render(request,"AppMaster/login_request.html", {'mensaje2': "Usuario creado correctamente", 'form': form2 })
         else:
-            return render(request, "AppMaster/register.html", {"form":form, "mensaje":"Error al crear el usuario"})
+            form = UserRegisterForm()
+            mensaje = "Los datos ingresados no son validos"
+        
         
     else:
-        form=RegExtForm()
-        return render(request, "AppMaster/register.html", {"form":form})
+        form=UserRegisterForm()
+    return render(request, "AppMaster/register.html", {"form":form})
 
 #@login_required
 def usuario(request):
@@ -86,10 +92,10 @@ def buscaruser(request):
 def buscar(request):
     print("--->",request.GET)
     if "user" in request.GET:
-        user=request.GET["user"]
-        print("2----------->",user)
-        users=Usuario.objects.filter(username__icontains=user)
-        print("3----------->",users)
+        usu=request.GET["user"]
+        print("2----------->",usu)
+        users=UserExt.objects.filter(username__icontains=usu)
+        #print("3----------->",users)
         contexto={"user": users}
         return render(request,"AppMaster/resultadosBusqueda.html", contexto)
     else:
@@ -97,69 +103,104 @@ def buscar(request):
 
 #@login_required
 def listarusuarios(request):
-    users=Usuario.objects.all()
+    users=UserExt.objects.all()
     contexto={"user":users}
-    print("contexto--->", contexto)
-    return render (request, "AppMaster/listarusuarios.html",contexto)
+    # print("contexto--->", contexto)
+    return render (request, "AppMaster/listarusuarios.html", contexto)
 
 #@login_required
 def eliminarUsuario(request, id):
-    usuario=get_object_or_404(Usuario, id=id)
+    usuario=get_object_or_404(User, id=id)
     print('-->', usuario)
     usuario.delete()
-    user=Usuario.objects.all()
+    user=User.objects.all()
     print('2--->', user)
     return render(request, "AppMaster/listarusuarios.html", {"mensaje":"Usuario eliminado correctamente", "user":user})
 
 #@login_required
 def detalleUsuario(request, id):
-	users = get_object_or_404(Usuario, id=id)
+	users = get_object_or_404(UserExt, id=id)
 	return render(request, 'AppMaster/detalleUsuario.html', {'user': users})
 
-#@login_required   
-def editarUsuario(request, id):
-    usuario=Usuario.objects.get(id=id)
-    if request.method=="POST":
-        form=UsuForm(request.POST)
-        print(form)
-        if form.is_valid():
-            informacion=form.cleaned_data
-            print(informacion)
-            usuario.id=informacion['id']
-            usuario.username=informacion["username"]            
-            usuario.name=informacion["name"]
-            usuario.lastname=informacion["lastname"]
-            usuario.email=informacion["email"]
-            usuario.save()
-            usuarios=Usuario.objects.get(id=id)
-            return render (request, "AppMaster/leerUsuario.html", {"mensaje": "Datos Modificados Correctamente!!", "usuarios":usuarios})
-    else:
-        form= UsuForm(initial={'id':usuario.id, "username":usuario.username,"name":usuario.name, "lastname":usuario.lastname, "email":usuario.email})
-    return render(request, "AppMaster/editarUsuario.html", {"form":form, "usuario":usuario})
 
+def editarUsuario(request):
+    usuario = request.user
+    
+    if request.method == 'POST':
+        form = UserEditForm(request.POST)
+        if form.is_valid():
+            informacion = form.cleaned_data
+            
+            # Datos a modificar:
+            usuario.email = informacion['email']
+            usuario.password1 = informacion['password1']
+            usuario.password2 = informacion['password2']
+            usuario.save()
+            
+            return render(request, 'AppMaster/profile_edit.html', {"usuarios":usuario} )
+        
+    else:
+        form = UserEditForm(instance=usuario)
+    
+    return render(request, 'AppMaster/profile_edit.html', {'form': form, 'usuario':usuario, 'email':usuario.email})
+
+@login_required
+def profile(request):
+    usuario = request.user
+    
+    if usuario.profile.avatar:
+        avatar = usuario.profile.avatar
+    else:
+        avatar = "avatars/user-logo.png"
+
+    context = {
+        'username': usuario.username,
+        'email': usuario.email,
+        'avatar': avatar,
+        'bio': usuario.profile.bio,
+        'website': usuario.profile.website,
+    }
+    
+    return render(request, 'AppMaster/profile.html', context)
+
+@login_required
+def profile_edit(request):
+    profile = Profile.objects.get(user=request.user)
+    if request.method == 'POST':
+        form = ProfileEditForm(request.POST, request.FILES, instance=profile)
+        if form.is_valid():
+            form.save()
+            return redirect('profile')
+    else:
+        form = ProfileEditForm(instance=profile)
+        return render(request, 'AppMaster/profile_edit.html', {'form': form})
 #------------------------------------------------------------------------------------------------------------------------
-# Modulo de login
 
 def login_request(request):
-    if request.method == "POST":
-        form=AuthenticationForm(request, data=request.POST)
+    if request.method == 'POST':
+        form = AuthenticationForm(request, data=request.POST)
         if form.is_valid():
-            usu=form.cleaned_data.get("username")
-            clave=form.cleaned_data.get("password")
+            usuario = form.cleaned_data.get('username')
+            contrasenia = form.cleaned_data.get('password')
+            
+            user = authenticate(username = usuario, password = contrasenia)
 
-            usuario=authenticate(username=usu, password=clave)
-            if usuario is not None:    
-                login(request, usuario)
-                return render(request, 'AppMaster/inicio.html', {'mensaje':f"Bienvenido {usuario}" })
+            if user is not None:
+                login(request,user)
+                return redirect('inicio')
+            
             else:
-                return render(request, 'AppMaster/login.html', {'mensaje':"Usuario o contraseña incorrectos", 'form':form})
+                form = AuthenticationForm()
+                return render(request,"AppMaster/login_request.html", {'mensaje': "Usuario o contrasenia incorrectos 1", 'form':form} )
 
         else:
-            return render(request, 'AppMaster/login.html', {'mensaje':"Usuario o contraseña incorrectos", 'form':form})
+            form = AuthenticationForm()
+            return render(request,"AppMaster/login_request.html", {'mensaje': "Usuario o contrasenia incorrectos 2", 'form': form} )
 
     else:
+
         form = AuthenticationForm()
-    return render(request, "AppMaster/login.html", {"form":form})
+        return render(request, 'AppMaster/login_request.html', {'form':form})
 
 #-----------------------------------------------------------------------------------------------------------------------
 #Vistas para los posteos
@@ -167,7 +208,7 @@ def login_request(request):
 class post_new(CreateView):
     model = Post
     success_url = reverse_lazy('post_list')
-    fields=['author', 'title', 'text', 'created_date']
+    fields=('author','title', 'text', 'created_date')
 
 #@login_required
 def post_edit(request, pk):
@@ -206,7 +247,7 @@ def post_list(request):
 
 def registerSuper(request):
     if request.method=="POST":
-        form=UserCreationForm(request.POST)
+        form=RegistroUsuarioForm(request.POST)
         if form.is_valid():
             username=form.cleaned_data.get("username")
             form.save()
@@ -215,5 +256,13 @@ def registerSuper(request):
             return render(request, "AppMaster/registerSuper.html", {"form":form, "mensaje":"Error al crear el SuperUser"})
         
     else:
-        form=RegExtForm()
+        form=RegistroUsuarioForm()
         return render(request, "AppMaster/registerSuper.html", {"form":form})
+
+def SuperUser(request):
+    return render(request, 'AppMaster/SuperUser.html')
+
+def SuperUser_list(request):
+    superuser = UserExt.objects.all()
+    contexto = {'superuser': superuser}
+    return render(request, 'AppMaster/SuperUser_list.html', contexto)

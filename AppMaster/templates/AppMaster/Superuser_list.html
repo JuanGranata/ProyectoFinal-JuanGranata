@@ -1,0 +1,33 @@
+{% extends "AppMaster/padre.html" %}
+
+{% load static %}
+
+{% block titulo %}
+<a class="btn btn-primary" href="{% url 'registerSuper' %}">SuperUsers</a> <br>
+{% if superuser %}
+{% for superuser in superuser %}
+<h2>Usuario {{ superuser.username }}</h2>
+
+<br>
+<p> Username: {{ superuser.username }} <br> </p>
+<p> Nombre: {{ superuser.first_name }} <br> </p>   
+<p> Apellido: {{ superuser.last_name }}  <br> </p>
+<p> Email: {{ superuser.email }}  <br> </p>
+    <br>
+<p>--------------------------------------------------------</p>
+    <br>
+    <br>
+
+    </ul>
+{% endfor %}
+
+{% else %}
+<p> no llega nada</p>
+
+{% endif %}
+{% endblock %}
+
+{% block contenido_que_cambia %}
+
+
+{% endblock %}

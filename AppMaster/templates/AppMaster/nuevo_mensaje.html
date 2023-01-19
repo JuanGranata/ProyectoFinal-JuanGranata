@@ -1,0 +1,35 @@
+{% extends "AppMaster/padre.html" %}
+
+{% load static %}
+
+{% block titulo %}
+
+<section class="s-content s-content--narrow">
+
+    <div class="row">
+
+        <div class="s-content__header col-full">
+            <h1 class="s-content__header-title">
+                Nuevo Mensaje:
+            </h1>
+            <p>
+                {{ error_message }}
+                <form action="{% url 'new_message' %}" method="POST">
+                    {% csrf_token %}
+                    <div align='center'>
+                    {{ form.as_p }}
+                    </div>
+                    <input type="submit" value="Enviar">
+                </form>
+            </p>   
+        </div>
+
+    </div>
+
+</section>
+
+{% endblock %}
+
+{% block contenido_que_cambia %}
+
+{% endblock %}

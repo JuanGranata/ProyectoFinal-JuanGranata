@@ -1,0 +1,45 @@
+{% extends "AppMaster/padre.html" %}
+
+{% load static %}
+
+{% block titulo %}
+<section class="s-content s-content--narrow">
+
+    <div class="row">
+
+        <div class="s-content__header col-full">
+            <h2>
+                {{ mensaje2 }}
+            </h2>
+            <h1 class="s-content__header-title">
+                Iniciar Sesion
+            </h1>
+            <h2>
+                {{ mensaje }}
+            </h2>
+        </div> <!-- end s-content__header -->
+
+        <div class="col-full s-content__main">
+
+            <form name="cForm" id="cForm" method="POST" action="{% url 'login' %}" align='center'>
+                {% csrf_token %}
+                    <div align='center'>
+                    {{form.as_p}}
+                    </div>
+                <input type='submit' value='Ingresar'>
+            </form>
+
+        </div>
+
+    </div>
+
+</section>
+{% endblock %}
+
+{% block contenido_que_cambia %}
+
+
+
+
+
+{% endblock %}

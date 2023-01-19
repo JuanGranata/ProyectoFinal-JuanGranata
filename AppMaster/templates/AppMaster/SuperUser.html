@@ -1,0 +1,20 @@
+{% extends "AppMaster/padre.html" %}
+
+{% load static %}
+
+
+{% block titulo %}
+
+    <nav class="navbar navbar-light">
+        <a class="btn btn-primary" href="{% url 'registerSuper' %}">Crear</a>
+        <a class="btn btn-primary" href="{% url 'SuperUser_list' %}">Listar</a>
+   
+    </nav>
+
+
+{% endblock %}
+
+
+{% block contenido_que_cambia %}
+
+{% endblock %}

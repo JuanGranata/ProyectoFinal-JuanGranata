@@ -4,17 +4,20 @@ from django.utils.timezone import timezone
 from django.conf import settings
 from django.utils import timezone
 
-class Usuario(models.Model):
-    username=models.CharField(max_length=50)
-    name=models.CharField(max_length=50)
-    lastname=models.CharField(max_length=50)
-    email=models.EmailField()
-
+class Profile(models.Model):
+    user = models.OneToOneField(User, null=True, on_delete=models.CASCADE)
+    bio = models.TextField(null=True, blank=True)
+    avatar = models.ImageField(upload_to='avatars', blank=True)
+    website = models.URLField(max_length=200, null=True, blank=True)
+        
     def __str__(self):
-        return f'{self.username} - {self.name} - {self.lastname} - {self.email}'
+        return f'{self.user}'
+    
+    def get_avatar(self):
+        return self.avatar
 
 class Post(models.Model):
-    author = models.ForeignKey(Usuario, on_delete=models.CASCADE)
+    author = models.ForeignKey(User, on_delete=models.CASCADE)
     title = models.CharField(max_length=200)
     text = models.TextField()
     created_date = models.DateTimeField(default=timezone.now)
@@ -25,15 +28,19 @@ class Post(models.Model):
         self.save()
 
     def __str__(self):
-        return self.author, self.title
+        return f'{self.author} - {self.title}'
 
 
 class Avatar(models.Model):
-    user=models.ForeignKey(Usuario, on_delete=models.CASCADE)
+    user=models.ForeignKey(User, on_delete=models.CASCADE)
     imagen=models.ImageField(upload_to='avatares', null=True, blank=True)
     
     def __str__(self):
         return f"{self.user} - {self.imagen}"
+
+
+#------------------------------------------------------------------------------
+#para limpiar
 
 class AvatarSuper(models.Model):
     user=models.ForeignKey(User, on_delete=models.CASCADE)
