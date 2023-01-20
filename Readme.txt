@@ -20,6 +20,9 @@ se puede crear, listar y borrar), tambien esta en funcionamiento el modulo de me
 Todas las funciones principales se pueden utilizar con un usuario registra.
 Cada Usuario tiene la opcion de editar su perfil, en el cual tiene un campo de biografia, puede adjuntar una foto (avatar) y cargar su pagina web.
 
+Video en youtube:
+https://youtu.be/NWlMZHKICcI
+
 Descipcion de cada Vista:
 Antes de correr las pruebas hay que asegurarse que estamos logueados al portal.
 
