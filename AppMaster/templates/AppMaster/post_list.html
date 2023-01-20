@@ -3,8 +3,10 @@
 {% load static %}
 
 {% block titulo %}
-<a class="btn btn-primary" href="{% url 'post_new' %}">Crear nuevo Post</a><br><br>
-
+{% if request.user.is_authenticated %}
+<a class="btn btn-primary" href="{% url 'post_new' %}">Crear nuevo Post</a>
+{%endif%}
+<a class="btn btn-primary" href="{% url 'inicio' %}">Vover a Inicio</a><br><br>
 <p class="text-center text-white"> {{  mensaje  }} </p>
 
 <h1 class="mb-5">Listados de Post</h1>
@@ -17,7 +19,9 @@
     <p> Titulo: {{ posts.title }}</p>
     
     <a class="btn btn-primary" href="{% url 'post_detail' pk=posts.pk %}">Leer</a>
+    {% if request.user.is_authenticated %}
     <a class="btn btn-primary" href="{% url 'post_delete' pk=posts.pk %}">Borrar</a>
+    {%endif%}
     <p>----------------------------------------</p>
 
     {% endfor %}

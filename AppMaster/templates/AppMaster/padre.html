@@ -23,17 +23,17 @@
             <div class="container">
                 <a class="btn btn-primary" href="{% url 'inicio' %}">Pagina Principal</a>
 
-                <a class="btn btn-primary" href="{% url 'post_list' %}">Posts</a>
+                <a class="btn btn-primary" href="{% url 'post_list' %}">Posteo</a>
                 <a class="btn btn-primary" href="{% url 'aboutme' %}">Acerca de</a>
                 <a class="btn btn-primary" href="{% url 'all_messages' %}">Mensajes</a>
                 {% if request.user.is_authenticated %}
                 <h2> Hola {{ user.get_username }}</h2>
                 <img height="50px" src= '/media/{{ user.profile.avatar }}' alt="">
 
-                <a class="btn btn-primary" href="{% url 'usuario' %}">Profile</a>
+                <a class="btn btn-primary" href="{% url 'usuario' %}">Perfil</a>
                 <a class="btn btn-danger" href="{% url 'logout' %}">Desloguearme</a>
                 {% else %}
-                <a class="btn btn-primary" href="{% url 'register' %}">Crear</a>
+                <a class="btn btn-primary" href="{% url 'register' %}">Registrarse</a>
                 <a class="btn btn-primary" href="{% url 'login' %}">Login</a>
                 {% endif %}                
                 

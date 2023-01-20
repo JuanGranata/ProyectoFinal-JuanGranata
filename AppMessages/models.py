@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 from django.utils.timezone import timezone
 from django.conf import settings
 from django.utils import timezone
-# from AppMaster.models import UserExt
+#from AppMaster.models import UserExt
 
 # Create your models here.
 

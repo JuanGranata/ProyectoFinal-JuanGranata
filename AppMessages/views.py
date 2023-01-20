@@ -16,7 +16,7 @@ from django.utils import timezone
 #------------------------------------------------------------------------------------------------
 #vistas de mensajeria
 
-@login_required
+@login_required(login_url='login')
 def all_messages(request):
     
     for_me = Message.objects.filter(receiver=request.user)
@@ -29,7 +29,7 @@ def all_messages(request):
     
     return render(request, 'AppMaster/bandeja.html', context)
 
-@login_required
+@login_required(login_url='login')
 def new_message(request):
     if request.method == 'POST':
         
@@ -70,7 +70,7 @@ def new_message(request):
     
     return render(request, 'AppMaster/nuevo_mensaje.html',{'form':form})
 
-@login_required
+@login_required(login_url='login')
 def chat(request, id):
     message = Message.objects.get(id=id)
 
@@ -80,7 +80,17 @@ def chat(request, id):
 
     return render(request, 'AppMaster/chat.html', {'message': message}) 
 
+@login_required(login_url='login')
+def chat_view(request, id):
+    message = Message.objects.get(id=id)
 
+    message.seen = True
+    message.save()
+
+
+    return render(request, 'AppMaster/chat_view.html', {'message': message}) 
+
+@login_required(login_url='login')
 def respond_message(request, receiver):
     
     mensaje = Message.objects.create(sender = request.user.username, receiver = receiver)

@@ -15,15 +15,16 @@
                 Perfil
             </h1>
             <h2>
-                <p>{{ username }}</p>
-                <p>{{ email }}</p>
+                <p>Usuario: {{ username }}</p>
+                <p>Email: {{ email }}</p>
                 <p><img src="/media/{{ avatar }}" style="border-radius:50%; width:150px; height:150px"></p>
                 <p>Bio: {{ bio }}</p>
-                <p>Website: <a href="{{website}}">{{ website }}</a></p>
+                <p>Website: {{ website }}</a></p>
             </h2>
 
-            <a class="btn btn--stroke" href="{% url 'profile_edit' %}">Editar perfil</a>
-            <a class="btn btn--stroke" href="{% url 'editarUsuario' %}">Editar usuario</a>
+            <a class="btn btn-danger" href="{% url 'profile_edit' %}">Editar perfil</a>
+            <a class="btn btn-primary" href="{% url 'usuario' %}">Volver</a>
+
         </div>
 
 

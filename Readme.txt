@@ -15,14 +15,36 @@ Consigna: Se tiene que crear una Web semejante a un Blog, dicha web deberá cont
 ✔	Piezas sugeridas, no hace falta que estén todas, pero tiene que haber por lo menos un CRUD completo y el módulo de Login debe ser sólido:
 
 --------------------------------------------------------------------------------------------------------
-Esta version ya tiene funcionando el modulo de Usuarios (creacion, busqueda, edicion, listar y borrar), el modulo de post donde 
-se puede crear, editar, listar y borrar).
-El modulo Mensajes, esta presentando desperfectos tecnicos, estamos trabajando para solucionarlo a la brevedad...!!!
-AUn no esta habilitada la autenticacion de usuario SuperUser para borrar y editar en los modulos, ni subir AVATARS a los usuarios e imagenes en los post
+Esta version ya tiene funcionando el modulo de Usuarios (creacion, busqueda, edicion, listar y borrar), el modulo de posteos donde 
+se puede crear, listar y borrar), tambien esta en funcionamiento el modulo de mensajeria, en el cual con una bandeja de mensajes donde se listan los mensajes enviados y recibidos.
+Todas las funciones principales se pueden utilizar con un usuario registra.
+Cada Usuario tiene la opcion de editar su perfil, en el cual tiene un campo de biografia, puede adjuntar una foto (avatar) y cargar su pagina web.
 
-Set de pruebas segun cada vista: AUn no disponible
+Descipcion de cada Vista:
+Antes de correr las pruebas hay que asegurarse que estamos logueados al portal.
 
+- Modulo Posteo:
+    1- Este modulo puede ser accedido sin necesidad de estar logueado. 
+    2- Selecionar el boton y nos despliega el listados de posteos cargados en el portal y las opciones para cada uno.
+    3- Si elegimos la opcion "leer", nos muestra el detalle del posteos. Si elegimos la opcion "borrar" nos borra el posteo. Si eliges la opcion "crear nuevo posteo" te permite 
+    cargar uno nuevo. La opcion "volver" regresa a la pagina de inicio.
+    4- Las opciones "crear nuevo post" y "borrar" solo son visualizadas por los ususarios logueados.
 
+- Modulo Mensajes:
+    1- Este modulo solo puede ser accedido por los usuario logueados.
+    2- Al ingresar se muestra una bandeja de mensajes, donde se listan los mensajes enviado y recibidos.
+    2- Clickeando directamente sobre el mensaje nos da la opcion de "responder" el mensaje si estamos en la bandeja de Entrada.
+    Si estamos en la bandeja de Salida nos pemite leer en detalle el mensaje enviado.
+    3- Cuando ingresamos al mensaje recibido, automaticamente se cambia un registo que indica que el mensaje ya fue leido.
+
+- Modulo Perfil:
+    1- Aca permite al usuario registrar un nuevo usuario, buscar un usuario especifico, listar los usuarios y editar su perfil (bio, avatar y pagina web).
+    2- En la opcion "editar profile" nos da la opcion de cargar nuestra biografia, subir un avatar y poner nuestra pagina web.
+    3- Una vez seleccionado salvado los cambios nos despliega la informacion y nos vuleve a dar la opcion de editar nuevamente el profile o de volver
+    al menu de perfil.
+
+- Modulo Acerca de:
+    1- Eneste modulo hago una breve resenia de mi persona.
 
 
 Base de Datos SQLite

@@ -29,7 +29,7 @@
             <p>
                 {% for mensaje in from_me %}
                 <p>
-                    <a href="/chat/{{ mensaje.id }}">{{ mensaje.view }} | {{ mensaje.date }} | {{ mensaje.is_seen }}</a>
+                    <a href="/chat_view/{{ mensaje.id }}">{{ mensaje.view }} | {{ mensaje.date }} | {{ mensaje.is_seen }}</a>
                 </p>
                 {% endfor %}
             </p>

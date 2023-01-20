@@ -11,7 +11,7 @@ class Profile(models.Model):
     website = models.URLField(max_length=200, null=True, blank=True)
         
     def __str__(self):
-        return f'{self.user}'
+        return f'{self.user} - {self.bio}'
     
     def get_avatar(self):
         return self.avatar
@@ -49,5 +49,11 @@ class AvatarSuper(models.Model):
     def __str__(self):
         return f"{self.user} - {self.imagen}"
 
+class UserExt(User):
+    class Meta:
+        proxy=True
+        
+    def __str__(self):
+        return f'{self.username} - {self.email}'
 
 

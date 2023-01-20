@@ -1,6 +1,6 @@
 from django.urls import path
 from AppMaster.views import *
-from django.contrib.auth.views import LogoutView
+from django.contrib.auth.views import LogoutView 
 
 urlpatterns = [
    
@@ -28,9 +28,9 @@ urlpatterns = [
 	path('post/<int:pk>/edit/', post_edit, name='post_edit'),
     path('post/<int:pk>/delete/', post_delete, name='post_delete'),
 
-    path('SuperUser/', SuperUser, name='SuperUser'),
-    path('registerSuper/', registerSuper, name='registerSuper'),
-    path('SuperUser_list/', SuperUser_list, name='SuperUser_list'),
-    path("agregarAvatarSuper/", agregarAvatarSuper, name='agregarAvatarSuper'),
+    # path('SuperUser/', SuperUser, name='SuperUser'),
+    # path('registerSuper/', registerSuper, name='registerSuper'),
+    # path('SuperUser_list/', SuperUser_list, name='SuperUser_list'),
+    # path("agregarAvatarSuper/", agregarAvatarSuper, name='agregarAvatarSuper'),
 
 ]
